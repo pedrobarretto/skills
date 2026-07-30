@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PLAN TITLE</title>
+    <meta name="description" content="ONE SENTENCE SUMMARY" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="PLAN TITLE" />
+    <meta property="og:description" content="ONE SENTENCE SUMMARY" />
+    <meta name="theme-color" content="#fbfaf8" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#101010" media="(prefers-color-scheme: dark)" />
+    <style>
+      :root {
+        --bg: #fbfaf8;
+        --surface: #ffffff;
+        --fg: #1c1b19;
+        --muted: #6b6862;
+        --faint: #97938c;
+        --border: #e6e2db;
+        --accent: #b4531f;
+        --accent-soft: #fdf2ea;
+        --done: #4a7c3f;
+        --warn: #a9701a;
+        --warn-soft: #fdf6e7;
+        --radius: 10px;
+        color-scheme: light;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #101010;
+          --surface: #171716;
+          --fg: #eae7e1;
+          --muted: #9d9992;
+          --faint: #6d6a64;
+          --border: #2a2927;
+          --accent: #e8834a;
+          --accent-soft: #241a13;
+          --done: #86c072;
+          --warn: #d9a54a;
+          --warn-soft: #241f13;
+          color-scheme: dark;
+        }
+      }
+      :root[data-theme='light'] {
+        --bg: #fbfaf8; --surface: #ffffff; --fg: #1c1b19; --muted: #6b6862;
+        --faint: #97938c; --border: #e6e2db; --accent: #b4531f;
+        --accent-soft: #fdf2ea; --done: #4a7c3f; --warn: #a9701a;
+        --warn-soft: #fdf6e7; color-scheme: light;
+      }
+      :root[data-theme='dark'] {
+        --bg: #101010; --surface: #171716; --fg: #eae7e1; --muted: #9d9992;
+        --faint: #6d6a64; --border: #2a2927; --accent: #e8834a;
+        --accent-soft: #241a13; --done: #86c072; --warn: #d9a54a;
+        --warn-soft: #241f13; color-scheme: dark;
+      }
+
+      *, *::before, *::after { box-sizing: border-box; }
+      html { -webkit-text-size-adjust: 100%; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--fg);
+        font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+          Inter, Roboto, Helvetica, Arial, sans-serif;
+        font-size: 16px;
+        line-height: 1.65;
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+      }
+      code, pre, kbd {
+        font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+        font-size: 0.875em;
+      }
+
+      /* progress ------------------------------------------------------- */
+      .progress {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.7rem clamp(1.25rem, 5vw, 2.5rem);
+        background: var(--bg);
+        background: color-mix(in srgb, var(--bg) 88%, transparent);
+        -webkit-backdrop-filter: saturate(1.4) blur(8px);
+        backdrop-filter: saturate(1.4) blur(8px);
+        border-bottom: 1px solid var(--border);
+        font-size: 0.8125rem;
+        color: var(--muted);
+      }
+      .progress__track {
+        flex: 1;
+        height: 4px;
+        border-radius: 99px;
+        background: var(--border);
+        overflow: hidden;
+      }
+      .progress__bar {
+        height: 100%;
+        width: 0%;
+        border-radius: 99px;
+        background: var(--done);
+        transition: width 260ms cubic-bezier(0.32, 0.72, 0, 1);
+      }
+      .progress__count { font-variant-numeric: tabular-nums; white-space: nowrap; }
+      .theme-toggle {
+        appearance: none;
+        border: 1px solid var(--border);
+        background: var(--surface);
+        color: var(--muted);
+        border-radius: 99px;
+        padding: 0.2rem 0.6rem;
+        font: inherit;
+        font-size: 0.75rem;
+        cursor: pointer;
+        transition: color 120ms, border-color 120ms;
+      }
+      .theme-toggle:hover { color: var(--fg); border-color: var(--faint); }
+
+      /* layout --------------------------------------------------------- */
+      .page {
+        max-width: 46rem;
+        margin: 0 auto;
+        padding: clamp(2rem, 6vw, 3.5rem) clamp(1.25rem, 5vw, 2.5rem) 6rem;
+      }
+      header h1 {
+        margin: 0 0 0.5rem;
+        font-size: clamp(1.75rem, 4.5vw, 2.375rem);
+        line-height: 1.15;
+        letter-spacing: -0.021em;
+        font-weight: 650;
+      }
+      .lede {
+        margin: 0 0 1.25rem;
+        font-size: 1.0625rem;
+        color: var(--muted);
+        max-width: 38rem;
+      }
+      .chips { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0 0 2.5rem; }
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        border: 1px solid var(--border);
+        border-radius: 99px;
+        padding: 0.15rem 0.6rem;
+        font-size: 0.75rem;
+        color: var(--muted);
+        background: var(--surface);
+      }
+      .chip code { font-size: 0.75rem; color: var(--fg); }
+
+      section { margin: 0 0 2.5rem; }
+      h2 {
+        margin: 0 0 0.875rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.09em;
+        text-transform: uppercase;
+        color: var(--faint);
+      }
+      h3 { margin: 0 0 0.35rem; font-size: 1rem; font-weight: 600; letter-spacing: -0.006em; }
+      p { margin: 0 0 0.875rem; }
+      p:last-child { margin-bottom: 0; }
+      a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+
+      ul.plain { margin: 0; padding: 0; list-style: none; }
+      ul.plain li {
+        position: relative;
+        padding-left: 1.15rem;
+        margin-bottom: 0.4rem;
+      }
+      ul.plain li::before {
+        content: '';
+        position: absolute;
+        left: 0.1rem;
+        top: 0.72em;
+        width: 4px;
+        height: 4px;
+        border-radius: 99px;
+        background: var(--faint);
+      }
+      ul.plain li:last-child { margin-bottom: 0; }
+
+      code:not(pre code) {
+        background: var(--accent-soft);
+        color: var(--accent);
+        padding: 0.1em 0.35em;
+        border-radius: 4px;
+      }
+      pre {
+        margin: 0 0 0.875rem;
+        padding: 0.875rem 1rem;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        overflow-x: auto;
+        line-height: 1.55;
+      }
+      pre code { background: none; color: inherit; padding: 0; }
+
+      /* steps ---------------------------------------------------------- */
+      .steps { margin: 0; padding: 0; list-style: none; counter-reset: step; }
+      .step {
+        counter-increment: step;
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 0.875rem;
+        padding: 1rem 1.125rem;
+        margin-bottom: 0.5rem;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        transition: border-color 140ms ease, opacity 140ms ease;
+      }
+      .step:hover { border-color: var(--faint); }
+      .step__check {
+        appearance: none;
+        margin: 0.28rem 0 0;
+        width: 1.05rem;
+        height: 1.05rem;
+        flex: none;
+        border: 1.5px solid var(--faint);
+        border-radius: 5px;
+        background: transparent;
+        cursor: pointer;
+        display: grid;
+        place-content: center;
+        transition: background 140ms ease, border-color 140ms ease;
+      }
+      .step__check::after {
+        content: '';
+        width: 0.5rem;
+        height: 0.28rem;
+        border-left: 2px solid var(--bg);
+        border-bottom: 2px solid var(--bg);
+        transform: rotate(-45deg) scale(0.4);
+        opacity: 0;
+        transition: opacity 120ms ease, transform 160ms cubic-bezier(0.32, 0.72, 0, 1);
+      }
+      .step__check:checked { background: var(--done); border-color: var(--done); }
+      .step__check:checked::after { opacity: 1; transform: rotate(-45deg) scale(1); }
+      .step__check:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+      .step__body > :last-child { margin-bottom: 0; }
+      .step__body h3::before {
+        content: counter(step) '.';
+        color: var(--faint);
+        font-variant-numeric: tabular-nums;
+        margin-right: 0.4rem;
+        font-weight: 500;
+      }
+      .step:has(.step__check:checked) { opacity: 0.5; }
+      .step:has(.step__check:checked) .step__body h3 { text-decoration: line-through; }
+
+      .callout {
+        padding: 0.875rem 1rem;
+        border: 1px solid var(--border);
+        border-left: 3px solid var(--warn);
+        border-radius: var(--radius);
+        background: var(--warn-soft);
+        margin-bottom: 0.5rem;
+      }
+      .callout h3 { color: var(--warn); font-size: 0.9375rem; }
+      .callout > :last-child { margin-bottom: 0; }
+
+      footer {
+        margin-top: 3.5rem;
+        padding-top: 1.25rem;
+        border-top: 1px solid var(--border);
+        font-size: 0.8125rem;
+        color: var(--faint);
+      }
+
+      /* print ---------------------------------------------------------- */
+      @media print {
+        :root {
+          --bg: #fff; --surface: #fff; --fg: #000; --muted: #333;
+          --faint: #666; --border: #ccc;
+        }
+        .progress, .theme-toggle { display: none; }
+        .page { max-width: none; padding: 0; }
+        .step, .callout { break-inside: avoid; page-break-inside: avoid; opacity: 1 !important; }
+        a { color: inherit; text-decoration: none; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after { transition-duration: 0.01ms !important; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="progress">
+      <span class="progress__count" id="count">0 / 0</span>
+      <div class="progress__track"><div class="progress__bar" id="bar"></div></div>
+      <button class="theme-toggle" id="theme" type="button">Theme</button>
+    </div>
+
+    <div class="page">
+      <header>
+        <h1>PLAN TITLE</h1>
+        <p class="lede">
+          One or two sentences on what this plan achieves and why it is worth doing.
+        </p>
+        <div class="chips">
+          <span class="chip">REPO_OR_PROJECT</span>
+          <span class="chip">branch <code>BRANCH_NAME</code></span>
+          <span class="chip">DATE</span>
+        </div>
+      </header>
+
+      <section>
+        <h2>Context</h2>
+        <p>
+          Where things stand today, and the specific problem this plan solves. Name
+          real files as <code>path/to/file.ts:42</code> so they are checkable.
+        </p>
+      </section>
+
+      <section>
+        <h2>Out of scope</h2>
+        <ul class="plain">
+          <li>Something a reader would reasonably expect here, and why it is excluded.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Steps</h2>
+        <ol class="steps">
+          <li class="step">
+            <input class="step__check" type="checkbox" aria-label="Mark step complete" />
+            <div class="step__body">
+              <h3>Short imperative title</h3>
+              <p>
+                What changes, in which file, and how to tell it worked. One step should
+                be one reviewable commit.
+              </p>
+            </div>
+          </li>
+          <li class="step">
+            <input class="step__check" type="checkbox" aria-label="Mark step complete" />
+            <div class="step__body">
+              <h3>Another step</h3>
+              <pre><code>npm test -- --run path/to/test</code></pre>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section>
+        <h2>Risks</h2>
+        <div class="callout">
+          <h3>What could go wrong</h3>
+          <p>The failure mode, and what to do if it happens.</p>
+        </div>
+      </section>
+
+      <section>
+        <h2>Verification</h2>
+        <ul class="plain">
+          <li>The command or observation that proves the whole plan landed.</li>
+        </ul>
+      </section>
+
+      <footer>
+        Progress is stored in this browser only. Anyone with the link can read this page.
+      </footer>
+    </div>
+
+    <script>
+      // Checkbox state is per-browser, keyed by hostname so each plan is independent.
+      (function () {
+        var steps = Array.prototype.slice.call(document.querySelectorAll('.step__check'))
+        var key = 'plan-page:' + location.hostname
+        var bar = document.getElementById('bar')
+        var count = document.getElementById('count')
+
+        function read(name, fallback) {
+          try { return localStorage.getItem(name) } catch (e) { return fallback }
+        }
+        function write(name, value) {
+          try { localStorage.setItem(name, value) } catch (e) {}
+        }
+
+        var saved = (read(key, '') || '').split(',')
+        steps.forEach(function (box, i) {
+          box.checked = saved[i] === '1'
+          box.addEventListener('change', function () {
+            write(key, steps.map(function (b) { return b.checked ? '1' : '0' }).join(','))
+            render()
+          })
+        })
+
+        function render() {
+          var done = steps.filter(function (b) { return b.checked }).length
+          count.textContent = done + ' / ' + steps.length
+          bar.style.width = steps.length ? (done / steps.length) * 100 + '%' : '0%'
+        }
+        render()
+
+        var themeKey = 'plan-page:theme'
+        var stored = read(themeKey, null)
+        if (stored) document.documentElement.setAttribute('data-theme', stored)
+        document.getElementById('theme').addEventListener('click', function () {
+          var current =
+            document.documentElement.getAttribute('data-theme') ||
+            (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+          var next = current === 'dark' ? 'light' : 'dark'
+          document.documentElement.setAttribute('data-theme', next)
+          write(themeKey, next)
+        })
+      })()
+    </script>
+  </body>
+</html>
