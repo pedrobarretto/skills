@@ -20,7 +20,7 @@ npx skills@latest add pedrobarretto/skills --skill babysit-pr
 
 | Skill | What it does |
 | --- | --- |
-| [babysit-pr](skills/babysit-pr/SKILL.md) | Carries a GitHub PR through review feedback and CI until it's ready for a human to merge. Triages comments one at a time, decides what's actually worth fixing, makes scoped changes, pushes, waits for CI, re-checks. Never merges. |
+| [babysit-pr](skills/babysit-pr/SKILL.md) | Monitors a GitHub PR through review feedback and CI, validates bot findings, fixes real issues, explains and resolves false positives, tracks the base branch, and stops when the latest commit is ready. Merges or closes only when explicitly authorized. |
 | [plan-page](skills/plan-page/SKILL.md) | Turns a task into a researched implementation plan, renders it as a self-contained HTML page, and publishes it at `https://<random-slug>.your-domain.com` so you can share the link. Updates in place, so a link you already shared stays current. Runs on your own Cloudflare Worker + KV — [one-time setup](skills/plan-page/worker/SETUP.md), then publishing is a single request with no deploy. |
 
 ## Adding a skill
