@@ -1,9 +1,12 @@
 ---
 name: plan-page
-description: Turn a task into a reviewable implementation plan, render it as a self-contained HTML page, and publish it to a random subdomain of your own domain so it can be shared as a link. Use when the user asks to plan a task or feature and wants the plan as a shareable page or URL rather than terminal output, or asks to publish, host, or share a plan, or to update a plan page that was published earlier. Runs on a Cloudflare Worker plus KV that the user deploys once; publishing after that is a single authenticated request with no build or deploy step.
+description: Turn a task into a reviewable implementation plan and publish it through the repository's self-hosted Cloudflare Worker plus KV. Use only when the user explicitly asks for a plan on their own domain, the Cloudflare-based plan-page workflow, or an update to a page previously published with this skill. For normal shareable HTML documents or Postplan URLs, use html-communication instead.
 ---
 
 # Plan Page
+
+This is the self-hosted alternative to `html-communication`. Use it only for the
+Cloudflare and custom-domain workflow described here.
 
 Use this skill to produce an implementation plan for a task, render it as one
 self-contained HTML file, and publish it at `https://<slug>.<their-domain>` so the

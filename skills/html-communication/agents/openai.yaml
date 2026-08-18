@@ -1,0 +1,4 @@
+interface:
+  display_name: "HTML Communication"
+  short_description: "Create polished, shareable HTML documents"
+  default_prompt: "Use $html-communication to turn this work into a polished, shareable HTML document."

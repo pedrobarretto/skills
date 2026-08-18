@@ -1,0 +1,4 @@
+interface:
+  display_name: "Postplan Read"
+  short_description: "Read and continue from Postplan drafts"
+  default_prompt: "Use $postplan-read to read this Postplan URL and continue the requested work."
