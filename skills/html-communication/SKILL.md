@@ -35,8 +35,13 @@ Create one complete HTML file, no larger than 512 KiB.
 
 - Use semantic HTML, a responsive viewport, and CSS in a `<style>` block.
 - Keep it mobile-readable and print-friendly without fixed-width layouts.
-- Default to a restrained dark document style: true black background, white
-  primary text, dark gray secondary surfaces, and one purposeful accent color.
+- Choose the theme from the user's local time when the document is created. Use
+  a restrained light theme before 18:00, with a white or off-white background,
+  near-black primary text, light gray secondary surfaces, and one purposeful
+  accent color. At 18:00 or later, use a restrained dark theme with a true black
+  background, white primary text, dark gray secondary surfaces, and one
+  purposeful accent color. If the user's timezone is unknown, use the system's
+  local time. Keep the selected theme static; do not add JavaScript to switch it.
 - Prefer strong typography, spacing, tables, callouts, and compact diagrams over
   decorative chrome. Avoid hero sections and marketing copy.
 - Use inline SVG only when a diagram materially improves understanding.
