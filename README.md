@@ -24,7 +24,6 @@ npx skills@latest add pedrobarretto/skills --skill babysit-pr
 | [file-upload](skills/file-upload/SKILL.md) | Uploads local files to a public Vercel Blob store and returns stable URLs on a custom domain, with durable local configuration shared across shell sessions. |
 | [file-pr](skills/file-pr/SKILL.md) | Opens a concise, human-readable pull request for the current branch after checking for an existing PR, reviewing the diff, and matching the repository's title conventions. |
 | [html-communication](skills/html-communication/SKILL.md) | Turns plans, specs, reports, comparisons, and static UI variants into polished, self-contained HTML documents, with optional publishing to a stable Postplan URL. |
-| [plan-page](skills/plan-page/SKILL.md) | Turns a task into a researched implementation plan, renders it as a self-contained HTML page, and publishes it at `https://<random-slug>.your-domain.com` so you can share the link. Updates in place, so a link you already shared stays current. Runs on your own Cloudflare Worker + KV — [one-time setup](skills/plan-page/worker/SETUP.md), then publishing is a single request with no deploy. |
 | [postplan-read](skills/postplan-read/SKILL.md) | Reads a supplied Postplan URL directly and continues the requested review, implementation, comparison, or update from the draft's contents. |
 
 ## Adding a skill
