@@ -5,3 +5,6 @@ node_modules/
 # Filled in locally by whoever installs plan-page — holds their domain and KV id.
 skills/plan-page/worker/wrangler.toml
 .wrangler/
+
+# Filled in locally with the public Blob host for the file-upload proxy.
+skills/file-upload/vercel/vercel.json

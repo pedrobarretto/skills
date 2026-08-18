@@ -1,0 +1,4 @@
+interface:
+  display_name: "File Upload"
+  short_description: "Upload local files and return public URLs"
+  default_prompt: "Use $file-upload to upload this file and return its public URL."
