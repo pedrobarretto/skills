@@ -1,87 +1,70 @@
 ---
 name: html-communication
-description: Create polished, self-contained HTML documents and optionally publish them as stable Postplan URLs. Use when the user wants a plan, specification, proposal, report, findings summary, comparison, architecture note, decision record, or static UI variants presented as a readable HTML page, especially when they want a shareable link. Do not use for HTML that ships as part of a product or website.
+description: Use when the user asks to communicate through an HTML document.
+metadata:
+  harness: [claude, codex]
+  platform: [darwin, linux]
+  scope: fleet
+  requires: "npx (postplan is run via npx)"
 ---
 
 # HTML Communication
 
-Turn the user's material into a dense, readable document rather than a landing
-page. Preserve the substance of the request; presentation must not hide missing
-research or invented facts.
+## When to Use
 
-Require Node.js with `npx` only when publishing. Postplan accepts anonymous
-uploads; authentication is optional but recommended for listing and managing
-drafts later.
+Use this skill when the user wants a plan, spec, write-up, findings, summary,
+report, comparison, or set of UI mocks presented as readable HTML.
 
-## Build the content
+Do not use it for HTML that ships as part of a product.
 
-1. Determine the artifact type and audience from the request.
-2. Gather the evidence needed to make it accurate. For implementation plans,
-   inspect the repository instructions, relevant code paths, existing patterns,
-   tests, risks, and verification commands before writing the page.
-3. Organize the document for scanning. Prefer a specific title, short context,
-   clear sections, concrete decisions or steps, risks, and next actions.
-4. Distinguish verified facts, decisions, assumptions, and open questions.
-5. Cite useful source locations and links near the claims they support.
+## Document
 
-For implementation plans, make every step executable by someone who has not done
-the research. Name exact files or components, intended behavior, dependencies,
-and focused verification. Do not implement the plan unless the user separately
-asks for implementation.
+Create one self-contained HTML file, capped at 512 KB.
 
-## Create the document
+- Write it like a spec, not a landing page: dense, scannable, no hero,
+  decorative chrome, marketing voice, or em dashes.
+- Before 18:00 in the user's local time, use a white or off-white background,
+  near-black primary text, and light gray only for secondary surfaces or
+  accents. At 18:00 or later, use true black (`#000`), white primary text, and
+  dark gray only for secondary surfaces or accents. If the user's timezone is
+  unknown, use the system's local time.
+- Make it mobile-readable with a responsive viewport and no fixed-width layout.
+- Use semantic HTML, inline CSS, inline SVG, and HTTPS or data-URL images.
+- Use an inline classic script only when interactivity materially helps. Keep
+  scripted pages useful without JavaScript; the sandbox blocks storage, fetch,
+  workers, frames, forms, and popups.
+- In script-free files, give external links `target="_blank"` and
+  `rel="noopener noreferrer"`. If any script exists, omit `target="_blank"`.
 
-Create one complete HTML file, no larger than 512 KiB.
+Never include external or module scripts, inline event handlers, `javascript:`
+URLs, forms, frames, embeds, objects, applets, meta refresh, linked stylesheets,
+secrets, private URLs, or local filesystem paths.
 
-- Use semantic HTML, a responsive viewport, and CSS in a `<style>` block.
-- Keep it mobile-readable and print-friendly without fixed-width layouts.
-- Choose the theme from the user's local time when the document is created. Use
-  a restrained light theme before 18:00, with a white or off-white background,
-  near-black primary text, light gray secondary surfaces, and one purposeful
-  accent color. At 18:00 or later, use a restrained dark theme with a true black
-  background, white primary text, dark gray secondary surfaces, and one
-  purposeful accent color. If the user's timezone is unknown, use the system's
-  local time. Keep the selected theme static; do not add JavaScript to switch it.
-- Prefer strong typography, spacing, tables, callouts, and compact diagrams over
-  decorative chrome. Avoid hero sections and marketing copy.
-- Use inline SVG only when a diagram materially improves understanding.
-- Use HTTPS or data-URL images only when necessary. Add useful alt text.
-- Render requested UI alternatives as real static variants labeled A, B, C, and
-  lay them out for direct comparison.
-- Do not include JavaScript, scripts, inline event handlers, `javascript:` URLs,
-  forms, frames, embeds, objects, applets, meta refresh, or linked stylesheets.
-- Never include secrets, credentials, customer data, private URLs, internal
-  hostnames, or local filesystem paths. A Postplan URL is public to anyone who
-  has it.
+## UI Mocks
 
-Write the file in the session scratch directory, not the user's repository,
-unless the user asks for a local project artifact. Keep the same absolute file
-path while iterating so Postplan can update the existing draft.
+When the user asks for variants:
 
-## Publish when requested
+- Render real styled variants, not descriptions.
+- Label them `A`, `B`, `C`... for easy selection.
+- Lay them out for direct comparison.
+- Keep one file across iterations so its Postplan URL stays stable.
 
-Publishing is an external write. Upload only when the user asks for a shareable,
-hosted, published, or Postplan page. Creating a local HTML file alone does not
-authorize publishing it.
+## Publish
 
-Run:
+Pedro has given standing permission to upload every artifact created or updated
+with this skill. Upload is required, including in Auto mode. Do not ask for
+separate permission or stop at the local file.
 
-```bash
-npx --yes postplan upload <absolute-file-path> --description "<short label>"
-```
+1. Write the HTML file locally.
+2. Run `npx postplan upload <file path>`.
+3. Report the local path and returned Postplan URL.
 
-Postplan validates the document and prints a public draft URL, a raw HTML URL,
-and a draft ID. Report the local path and public URL. Prefer the normal draft URL
-for people and the raw URL when handing the artifact to another agent.
+Re-upload the same absolute path to update the existing URL. Use
+`npx postplan upload <file path> --new` only when a new draft is wanted.
 
-Uploading the same absolute path again updates the existing draft. Use `--new`
-only when the user explicitly wants a separate draft. If the path mapping is no
-longer available but the draft ID is known, update it with:
+If validation fails, fix the markup and retry. If a scripted upload needs
+authentication, ask the user to run `postplan auth login`, then retry without
+removing the requested interactivity.
 
-```bash
-npx --yes postplan upload <absolute-file-path> --draft <draft-id>
-```
-
-If validation fails, fix the HTML and retry. If authentication is required, ask
-the user to run `npx --yes postplan auth login`, then retry. Do not claim the page
-is hosted until the upload succeeds.
+Never open a browser or claim the document is hosted before upload succeeds.
+Do not verify in a browser unless the user asks.
