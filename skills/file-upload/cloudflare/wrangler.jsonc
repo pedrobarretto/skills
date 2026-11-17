@@ -1,0 +1,18 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  // Public, read-only host for the file-upload skill's R2 bucket.
+  "name": "file-upload",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-11-01",
+  "workers_dev": true,
+  "preview_urls": false,
+  "r2_buckets": [
+    {
+      "binding": "FILES",
+      "bucket_name": "file-upload"
+    }
+  ],
+  "observability": {
+    "enabled": false
+  }
+}
