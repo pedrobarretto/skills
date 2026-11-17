@@ -1,6 +1,6 @@
 ---
 name: file-upload
-description: Upload local files to a configured Vercel Blob store and return stable public URLs on a custom domain. Use when the user asks to upload, host, publish, attach, or share a local file; needs a public URL for a screenshot, image, video, document, or artifact; or needs media for a GitHub pull request, issue, or comment.
+description: Upload local files to a Cloudflare R2 bucket and return stable public URLs served by a small Worker. Use when the user asks to upload, host, publish, attach, or share a local file; needs a public URL for a screenshot, image, video, document, or artifact; or needs media for a GitHub pull request, issue, or comment.
 ---
 
 # File upload
@@ -23,9 +23,11 @@ If configuration is missing, run:
 ./scripts/upload.sh --configure
 ```
 
-This persists the public base URL and Vercel project link under `~/.config/file-upload/`, so configuration survives shell sessions. It intentionally relies on the Vercel CLI's durable login instead of a temporary shell variable.
+This persists the public base URL and the R2 bucket name in `~/.config/file-upload/config`, so configuration survives shell sessions. Uploads go through Wrangler's durable login (`npx wrangler@4 login`), so no credential is stored on disk by this skill.
 
-If no upload host exists yet, read [vercel/SETUP.md](vercel/SETUP.md) and provision one before configuring the uploader.
+If no bucket and Worker exist yet, read [cloudflare/SETUP.md](cloudflare/SETUP.md) and provision them before configuring the uploader. The old Vercel Blob host in `vercel/` is legacy and no longer used.
+
+Files up to 300 MiB can be uploaded (Wrangler's limit). The host blocks known bulk crawlers and marks every file `noindex`.
 
 ## Use the URL in GitHub
 
@@ -39,3 +41,4 @@ If no upload host exists yet, read [vercel/SETUP.md](vercel/SETUP.md) and provis
 - Treat every uploaded file as public. Never upload credentials, private keys, access tokens, customer data, or other sensitive material.
 - Use the generated immutable URL. Do not assume a filename maps to a predictable object path.
 - On authentication or configuration errors, report the problem instead of retrying with guessed credentials.
+- Never run Wrangler from `$HOME`: it leaves a `~/.wrangler/` cache that hides the real login. The script always runs it from `~/.config/file-upload/runtime`.

@@ -1,4 +1,6 @@
-# Vercel setup
+# Vercel setup (legacy)
+
+> **Legacy.** The skill now uploads to Cloudflare R2; see [../cloudflare/SETUP.md](../cloudflare/SETUP.md). Vercel bills every request and GB served, which a crawler of public PR images made expensive. This page is kept only to document the old Blob host, and `scripts/upload.sh` no longer talks to Vercel.
 
 Use one small Vercel project as a custom-domain proxy in front of a public Vercel Blob store. Uploads go directly to Blob, so they do not pass through a Vercel Function's request-size limit.
 
